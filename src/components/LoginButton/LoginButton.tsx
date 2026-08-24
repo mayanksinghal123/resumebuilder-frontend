@@ -1,16 +1,5 @@
-// components/LoginButton/LoginButton.tsx
-
-import { Button, type ButtonProps } from "@mui/material";
+import type { ButtonHTMLAttributes } from "react";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
-
-type LoginButtonProps = ButtonProps;
-
-export default function LoginButton(props: LoginButtonProps) {
-  const { requireAuth } = useRequireAuth();
-
-  return (
-    <Button variant="contained" onClick={() => requireAuth()} {...props}>
-      Login
-    </Button>
-  );
-}
+import { Button, type ButtonVariant } from "../ui/Button";
+interface LoginButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> { variant?: ButtonVariant; }
+export default function LoginButton({ variant = "primary", ...props }: LoginButtonProps) { const { requireAuth } = useRequireAuth(); return <Button variant={variant} onClick={() => requireAuth()} {...props}>Login</Button>; }

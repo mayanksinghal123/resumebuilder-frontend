@@ -1,28 +1,7 @@
 import A4Paper from "../../Layouts/A4Paper";
-import SkillsSection from "./SkillSection/SkillSection";
 import HeaderSection from "./HeaderSection/HeaderSection";
+import SkillsSection from "./SkillSection/SkillSection";
 import WorkExperienceSection from "./WorkExperienceSection/WorkExperienceSection";
 import ProjectsSection from "./ProjectSection/ProjectSection";
 import EducationSection from "./EducationSection/EducationSection";
-import { Box } from "@mui/material";
-
-const Template1: React.FC = () => {
-  return (
-    <Box
-      sx={{
-        transform: "scale(0.92)",
-        transformOrigin: "top center",
-      }}
-    >
-      <A4Paper>
-        <HeaderSection />
-        <SkillsSection />
-        <WorkExperienceSection />
-        <ProjectsSection />
-        <EducationSection />
-      </A4Paper>
-    </Box>
-  );
-};
-
-export default Template1;
+export default function Template1() { return <div className="origin-top scale-[.92]"><A4Paper><div className="space-y-5 text-slate-900"><HeaderSection /><SkillsSection /><WorkExperienceSection /><ProjectsSection /><EducationSection /></div></A4Paper></div>; }

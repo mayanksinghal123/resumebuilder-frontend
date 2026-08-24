@@ -1,34 +1,4 @@
-// components/common/DownloadButton.tsx
-
-import DownloadIcon from "@mui/icons-material/Download";
-import { Button, CircularProgress, type ButtonProps } from "@mui/material";
-
-interface DownloadButtonProps extends Omit<ButtonProps, "children"> {
-  loading?: boolean;
-  label?: string;
-}
-
-const DownloadButton = ({
-  loading = false,
-  label = "Download PDF",
-  disabled,
-  ...buttonProps
-}: DownloadButtonProps) => {
-  return (
-    <Button
-      {...buttonProps}
-      disabled={disabled || loading}
-      startIcon={
-        loading ? (
-          <CircularProgress size={18} color="inherit" />
-        ) : (
-          <DownloadIcon />
-        )
-      }
-    >
-      {loading ? "Generating..." : label}
-    </Button>
-  );
-};
-
-export default DownloadButton;
+import { Download, LoaderCircle } from "lucide-react";
+import { Button, type ButtonVariant } from "../ui/Button";
+interface DownloadButtonProps { loading?: boolean; label?: string; onClick?: () => void; variant?: ButtonVariant; className?: string; fullWidth?: boolean; }
+export default function DownloadButton({ loading = false, label = "Download PDF", onClick, variant = "primary", className = "", fullWidth = false }: DownloadButtonProps) { return <Button variant={variant} disabled={loading} onClick={onClick} className={`${fullWidth ? "w-full" : ""} ${className}`}>{loading ? <LoaderCircle size={18} className="animate-spin" /> : <Download size={18} />}{loading ? "Generating..." : label}</Button>; }
