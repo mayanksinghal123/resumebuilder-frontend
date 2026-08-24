@@ -3,8 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>try{const t=localStorage.getItem('resume-builder-theme');const d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.dataset.theme=d;document.documentElement.style.colorScheme=d}catch(e){}</script>
+    <script>
+      try {
+        const t = localStorage.getItem("resume-builder-theme");
+        const d =
+          t === "dark" ||
+          (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches)
+            ? "dark"
+            : "light";
+        document.documentElement.dataset.theme = d;
+        document.documentElement.style.colorScheme = d;
+      } catch (e) {}
+    </script>
     <title>Resume Builder</title>
   </head>
-  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

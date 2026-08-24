@@ -1,4 +1,33 @@
 import type { GenerateResumeInput } from "@resume-app/shared";
 import { useForm } from "react-hook-form";
-const defaultValues: GenerateResumeInput = { name: "Mayank Gupta", title1: "Frontend Developer | React Js | TypeScript | Node Js | JavaScript", title2: "9015967996 | mayank@example.com | linkedin.com/in/mayankgupta | Faridabad, Haryana", summary: "Results-driven Staff Frontend Engineer with 9.5+ years of experience building scalable, high-performance web applications.", email: "mayank@example.com", skills: [{ category: "Frontend", item: "React, JavaScript, TypeScript, CSS, HTML" }, { category: "State Management", item: "Redux, Zustand, React Query, Context API" }], experiences: [{ company: "Tech Company", role: "Software Engineer", location: "San Francisco, CA", dates: "Jan 2020 - Present", description: "Working on developing and maintaining web applications using React and Node.js." }], projects: [], educations: [{ school: "University Name", date: "2016 - 2020" }] };
-export default function useResumeForm() { return useForm<GenerateResumeInput>({ defaultValues }); }
+const defaultValues: GenerateResumeInput = {
+  name: "Mayank Gupta",
+  title1: "Frontend Developer | React Js | TypeScript | Node Js | JavaScript",
+  title2:
+    "9015967996 | mayank@example.com | linkedin.com/in/mayankgupta | Faridabad, Haryana",
+  summary:
+    "Results-driven Staff Frontend Engineer with 9.5+ years of experience building scalable, high-performance web applications.",
+  email: "mayank@example.com",
+  skills: [
+    { category: "Frontend", item: "React, JavaScript, TypeScript, CSS, HTML" },
+    {
+      category: "State Management",
+      item: "Redux, Zustand, React Query, Context API",
+    },
+  ],
+  experiences: [
+    {
+      company: "Tech Company",
+      role: "Software Engineer",
+      location: "San Francisco, CA",
+      dates: "Jan 2020 - Present",
+      description:
+        "Working on developing and maintaining web applications using React and Node.js.",
+    },
+  ],
+  projects: [],
+  educations: [{ school: "University Name", date: "2016 - 2020" }],
+};
+export default function useResumeForm() {
+  return useForm<GenerateResumeInput>({ defaultValues });
+}

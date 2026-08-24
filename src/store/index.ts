@@ -7,12 +7,10 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     template: templateReducer,
-    resume: resumeReducer
+    resume: resumeReducer,
   },
 });
 
-export type RootState = ReturnType<
-  typeof store.getState
->;
+export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;

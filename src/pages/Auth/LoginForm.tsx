@@ -1,7 +1,100 @@
 import { useState } from "react";
 import { AlertCircle } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { signInWithEmail, signInWithGoogle, signUpWithEmail } from "../../store/authSlice";
+import {
+  signInWithEmail,
+  signInWithGoogle,
+  signUpWithEmail,
+} from "../../store/authSlice";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
-export default function LoginForm() { const dispatch = useAppDispatch(); const loading = useAppSelector((state) => state.auth.loading); const [isSignup, setIsSignup] = useState(false); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [error, setError] = useState(""); const submit = async () => { setError(""); try { if (isSignup) { await dispatch(signUpWithEmail({ email, password })).unwrap(); window.alert("Verification email sent. Please verify your email."); setIsSignup(false); } else await dispatch(signInWithEmail({ email, password })).unwrap(); } catch (err) { setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Something went wrong."); } }; const google = async () => { setError(""); try { await dispatch(signInWithGoogle()).unwrap(); } catch (err) { setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Something went wrong."); } }; return <div className="space-y-4 py-2"><p className="text-center text-sm text-muted-foreground">{isSignup ? "Create your Resume Builder account" : "Sign in to continue"}</p>{error && <div className="flex items-start gap-2 rounded-md bg-error/10 p-3 text-sm text-error" role="alert"><AlertCircle size={18} />{error}</div>}<Input label="Email" type="email" value={email} disabled={loading} onChange={(event) => setEmail(event.target.value)} /><Input label="Password" type="password" value={password} disabled={loading} onChange={(event) => setPassword(event.target.value)} /><Button className="w-full" disabled={loading} onClick={submit}>{loading ? "Please wait..." : isSignup ? "Create Account" : "Login"}</Button><Button variant="outline" className="w-full" disabled={loading} onClick={google}>Continue with Google</Button><button type="button" className="w-full text-center text-sm text-primary underline-offset-4 hover:underline" onClick={() => setIsSignup((previous) => !previous)}>{isSignup ? "Already have an account? Login" : "Create an account"}</button></div>; }
+export default function LoginForm() {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.auth.loading);
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const submit = async () => {
+    setError("");
+    try {
+      if (isSignup) {
+        await dispatch(signUpWithEmail({ email, password })).unwrap();
+        window.alert("Verification email sent. Please verify your email.");
+        setIsSignup(false);
+      } else await dispatch(signInWithEmail({ email, password })).unwrap();
+    } catch (err) {
+      setError(
+        typeof err === "string"
+          ? err
+          : err instanceof Error
+            ? err.message
+            : "Something went wrong.",
+      );
+    }
+  };
+  const google = async () => {
+    setError("");
+    try {
+      await dispatch(signInWithGoogle()).unwrap();
+    } catch (err) {
+      setError(
+        typeof err === "string"
+          ? err
+          : err instanceof Error
+            ? err.message
+            : "Something went wrong.",
+      );
+    }
+  };
+  return (
+    <div className="space-y-4 py-2">
+      <p className="text-center text-sm text-muted-foreground">
+        {isSignup
+          ? "Create your Resume Builder account"
+          : "Sign in to continue"}
+      </p>
+      {error && (
+        <div
+          className="flex items-start gap-2 rounded-md bg-error/10 p-3 text-sm text-error"
+          role="alert"
+        >
+          <AlertCircle size={18} />
+          {error}
+        </div>
+      )}
+      <Input
+        label="Email"
+        type="email"
+        value={email}
+        disabled={loading}
+        onChange={(event) => setEmail(event.target.value)}
+      />
+      <Input
+        label="Password"
+        type="password"
+        value={password}
+        disabled={loading}
+        onChange={(event) => setPassword(event.target.value)}
+      />
+      <Button className="w-full" disabled={loading} onClick={submit}>
+        {loading ? "Please wait..." : isSignup ? "Create Account" : "Login"}
+      </Button>
+      <Button
+        variant="outline"
+        className="w-full"
+        disabled={loading}
+        onClick={google}
+      >
+        Continue with Google
+      </Button>
+      <button
+        type="button"
+        className="w-full text-center text-sm text-primary underline-offset-4 hover:underline"
+        onClick={() => setIsSignup((previous) => !previous)}
+      >
+        {isSignup ? "Already have an account? Login" : "Create an account"}
+      </button>
+    </div>
+  );
+}

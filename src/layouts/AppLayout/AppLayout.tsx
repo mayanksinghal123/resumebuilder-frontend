@@ -5,5 +5,61 @@ import { requestDownload } from "../../store/resumeSlice";
 import { BaseNavbar } from "../../components/BaseNavbar/BaseNavbar";
 import DownloadButton from "../../components/DownloadButton/DownloadButton";
 import LoginButton from "../../components/LoginButton/LoginButton";
-import type { BaseNavbarProps, MenuItem } from "../../components/BaseNavbar/types/navbar.types";
-export default function AppLayout(props: BaseNavbarProps) { const navigate = useNavigate(); const dispatch = useAppDispatch(); const user = useAppSelector((state) => state.auth.user); const isDownloading = useAppSelector((state) => state.resume.isDownloading); const menuItems: MenuItem[] = [{ label: "Dashboard", onClick: () => navigate("/dashboard") }]; const download = () => dispatch(requestDownload()); const desktopActions = <div className="flex items-center gap-3"><DownloadButton loading={isDownloading} onClick={download} />{user ? <button type="button" onClick={() => dispatch(logout())} className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground" aria-label="Log out">{user.email?.[0]?.toUpperCase() ?? "U"}</button> : <LoginButton variant="ghost" />}</div>; const mobileActions = <div className="flex flex-col gap-3"><DownloadButton fullWidth loading={isDownloading} onClick={download} />{user && <button type="button" onClick={() => dispatch(logout())} className="rounded-md border border-border px-4 py-2 text-sm font-semibold">Log out</button>}</div>; return <div className="flex h-screen flex-col bg-background"><BaseNavbar {...props} menuItems={menuItems} desktopActions={desktopActions} mobileActions={mobileActions} /><main className="min-h-0 flex-1 overflow-hidden"><Outlet /></main></div>; }
+import type {
+  BaseNavbarProps,
+  MenuItem,
+} from "../../components/BaseNavbar/types/navbar.types";
+export default function AppLayout(props: BaseNavbarProps) {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const isDownloading = useAppSelector((state) => state.resume.isDownloading);
+  const menuItems: MenuItem[] = [
+    { label: "Dashboard", onClick: () => navigate("/dashboard") },
+  ];
+  const download = () => dispatch(requestDownload());
+  const desktopActions = (
+    <div className="flex items-center gap-3">
+      <DownloadButton loading={isDownloading} onClick={download} />
+      {user ? (
+        <button
+          type="button"
+          onClick={() => dispatch(logout())}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
+          aria-label="Log out"
+        >
+          {user.email?.[0]?.toUpperCase() ?? "U"}
+        </button>
+      ) : (
+        <LoginButton variant="ghost" />
+      )}
+    </div>
+  );
+  const mobileActions = (
+    <div className="flex flex-col gap-3">
+      <DownloadButton fullWidth loading={isDownloading} onClick={download} />
+      {user && (
+        <button
+          type="button"
+          onClick={() => dispatch(logout())}
+          className="rounded-md border border-border px-4 py-2 text-sm font-semibold"
+        >
+          Log out
+        </button>
+      )}
+    </div>
+  );
+  return (
+    <div className="flex h-screen flex-col bg-background">
+      <BaseNavbar
+        {...props}
+        menuItems={menuItems}
+        desktopActions={desktopActions}
+        mobileActions={mobileActions}
+      />
+      <main className="min-h-0 flex-1 overflow-hidden">
+        <Outlet />
+      </main>
+    </div>
+  );
+}

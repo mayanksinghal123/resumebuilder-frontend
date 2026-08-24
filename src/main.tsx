@@ -6,5 +6,24 @@ import App from "./App";
 import { store } from "./store";
 import { ThemeProvider } from "./theme";
 import "./index.css";
-const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 300000, gcTime: 3600000, retry: 1, refetchOnWindowFocus: false } } });
-createRoot(document.getElementById("root")!).render(<StrictMode><Provider store={store}><QueryClientProvider client={queryClient}><ThemeProvider><App /></ThemeProvider></QueryClientProvider></Provider></StrictMode>);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 300000,
+      gcTime: 3600000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </QueryClientProvider>
+    </Provider>
+  </StrictMode>,
+);

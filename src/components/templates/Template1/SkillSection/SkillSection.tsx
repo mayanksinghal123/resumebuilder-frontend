@@ -5,4 +5,45 @@ import EditableText from "../../../EditableText/EditableText";
 import EditableHoverCard from "../../../EditableHoverCard/EditableHoverCard";
 import EmptySection from "../../../EmptySection/EmptySection";
 import AddRowButton from "../../../AddRowButton/AddRowButton";
-export default function SkillsSection() { const { control } = useFormContext<GenerateResumeInput>(); const { fields, append, remove } = useFieldArray({ control, name: "skills" }); const add = () => append({ category: "New Category", item: "Add skills here" }); if (!fields.length) return <EmptySection label="Add Skills" onClick={add} />; return <section className="space-y-2"><EditableText value="SKILLS" fontSize={20} fontWeight={700} /><div className="space-y-1">{fields.map((field, index) => <EditableHoverCard key={field.id} onDelete={() => remove(index)} className="grid grid-cols-[220px_1fr] items-stretch"><div className="pr-2"><EditableTextController control={control} name={`skills.${index}.category`} fontWeight={600} fontSize={14} fullWidth multiline /></div><div className="pl-2"><EditableTextController control={control} name={`skills.${index}.item`} fontSize={14} fullWidth multiline /></div></EditableHoverCard>)}</div><AddRowButton label="Add More Skills" onClick={add} /></section>; }
+export default function SkillsSection() {
+  const { control } = useFormContext<GenerateResumeInput>();
+  const { fields, append, remove } = useFieldArray({ control, name: "skills" });
+  const add = () =>
+    append({ category: "New Category", item: "Add skills here" });
+  if (!fields.length) return <EmptySection label="Add Skills" onClick={add} />;
+  return (
+    <section className="space-y-2">
+      <EditableText value="SKILLS" fontSize={20} fontWeight={700} />
+      <div className="space-y-1">
+        {fields.map((field, index) => (
+          <EditableHoverCard
+            key={field.id}
+            onDelete={() => remove(index)}
+            className="grid grid-cols-[220px_1fr] items-stretch"
+          >
+            <div className="pr-2">
+              <EditableTextController
+                control={control}
+                name={`skills.${index}.category`}
+                fontWeight={600}
+                fontSize={14}
+                fullWidth
+                multiline
+              />
+            </div>
+            <div className="pl-2">
+              <EditableTextController
+                control={control}
+                name={`skills.${index}.item`}
+                fontSize={14}
+                fullWidth
+                multiline
+              />
+            </div>
+          </EditableHoverCard>
+        ))}
+      </div>
+      <AddRowButton label="Add More Skills" onClick={add} />
+    </section>
+  );
+}

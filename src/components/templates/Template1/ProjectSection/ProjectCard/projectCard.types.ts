@@ -1,1 +1,4 @@
-export interface ProjectCardProps { index: number; onDelete: () => void; }
+export interface ProjectCardProps {
+  index: number;
+  onDelete: () => void;
+}

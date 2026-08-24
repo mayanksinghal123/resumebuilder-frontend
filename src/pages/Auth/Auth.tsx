@@ -1,7 +1,91 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { signInWithEmail, signInWithGoogle, signUpWithEmail } from "../../store/authSlice";
+import {
+  signInWithEmail,
+  signInWithGoogle,
+  signUpWithEmail,
+} from "../../store/authSlice";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
-export default function Auth() { const dispatch = useAppDispatch(); const user = useAppSelector((state) => state.auth.user); const [isSignup, setIsSignup] = useState(false); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [error, setError] = useState(""); if (user) return <Navigate to="/dashboard" replace />; const submit = async () => { setError(""); try { if (isSignup) { await dispatch(signUpWithEmail({ email, password })).unwrap(); window.alert("Verification email sent"); setIsSignup(false); } else await dispatch(signInWithEmail({ email, password })).unwrap(); } catch (err) { setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Unable to continue"); } }; return <main className="flex min-h-screen items-center justify-center bg-background px-4 py-8"><section className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-lg sm:p-8"><div className="mb-8 text-center"><div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground">R</div><h1 className="text-2xl font-bold">Resume Builder</h1><p className="mt-2 text-sm text-muted-foreground">Build a resume that gets noticed.</p></div>{error && <p className="mb-4 rounded-md bg-error/10 p-3 text-sm text-error" role="alert">{error}</p>}<div className="space-y-4"><Input label="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} /><Input label="Password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} /><Button className="w-full" onClick={submit}>{isSignup ? "Create Account" : "Login"}</Button><Button variant="outline" className="w-full" onClick={() => dispatch(signInWithGoogle())}>Continue with Google</Button><button type="button" className="w-full text-sm text-primary hover:underline" onClick={() => setIsSignup((previous) => !previous)}>{isSignup ? "Already have an account? Login" : "Create account"}</button></div></section></main>; }
+export default function Auth() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  if (user) return <Navigate to="/dashboard" replace />;
+  const submit = async () => {
+    setError("");
+    try {
+      if (isSignup) {
+        await dispatch(signUpWithEmail({ email, password })).unwrap();
+        window.alert("Verification email sent");
+        setIsSignup(false);
+      } else await dispatch(signInWithEmail({ email, password })).unwrap();
+    } catch (err) {
+      setError(
+        typeof err === "string"
+          ? err
+          : err instanceof Error
+            ? err.message
+            : "Unable to continue",
+      );
+    }
+  };
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
+      <section className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-lg sm:p-8">
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground">
+            R
+          </div>
+          <h1 className="text-2xl font-bold">Resume Builder</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Build a resume that gets noticed.
+          </p>
+        </div>
+        {error && (
+          <p
+            className="mb-4 rounded-md bg-error/10 p-3 text-sm text-error"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+        <div className="space-y-4">
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <Button className="w-full" onClick={submit}>
+            {isSignup ? "Create Account" : "Login"}
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => dispatch(signInWithGoogle())}
+          >
+            Continue with Google
+          </Button>
+          <button
+            type="button"
+            className="w-full text-sm text-primary hover:underline"
+            onClick={() => setIsSignup((previous) => !previous)}
+          >
+            {isSignup ? "Already have an account? Login" : "Create account"}
+          </button>
+        </div>
+      </section>
+    </main>
+  );
+}

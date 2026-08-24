@@ -5,4 +5,60 @@ import EditableTextController from "../../../../EditableTextController/EditableT
 import EditableText from "../../../../EditableText/EditableText";
 import { Button } from "../../../../ui/Button";
 import type { ProjectCardProps } from "./projectCard.types";
-export default function ProjectCard({ index, onDelete }: ProjectCardProps) { const { control } = useFormContext<GenerateResumeInput>(); const descriptions = useFieldArray({ control, name: `projects.${index}.description` }); return <EditableHoverCard onDelete={onDelete} className="space-y-2 p-2"><div className="flex items-start justify-between gap-2"><EditableTextController control={control} name={`projects.${index}.title`} fontSize={18} fontWeight={700} /><EditableTextController control={control} name={`projects.${index}.date`} fontSize={14} fontStyle="italic" /></div><div className="grid grid-cols-[140px_1fr] gap-2 text-sm sm:grid-cols-[220px_1fr]"><EditableText value="Technology" fontWeight={700} /><EditableTextController control={control} name={`projects.${index}.technology`} fontStyle="italic" fullWidth multiline /><EditableText value="Description" fontWeight={700} /><div>{descriptions.fields.map((field, descIndex) => <div key={field.id} className="flex items-start gap-1"><span>•</span><EditableTextController control={control} name={`projects.${index}.description.${descIndex}.name`} fullWidth multiline fontSize={15} /></div>)}<Button variant="ghost" size="sm" onClick={() => descriptions.append({ name: "" })}>+ Description</Button></div></div></EditableHoverCard>; }
+export default function ProjectCard({ index, onDelete }: ProjectCardProps) {
+  const { control } = useFormContext<GenerateResumeInput>();
+  const descriptions = useFieldArray({
+    control,
+    name: `projects.${index}.description`,
+  });
+  return (
+    <EditableHoverCard onDelete={onDelete} className="space-y-2 p-2">
+      <div className="flex items-start justify-between gap-2">
+        <EditableTextController
+          control={control}
+          name={`projects.${index}.title`}
+          fontSize={18}
+          fontWeight={700}
+        />
+        <EditableTextController
+          control={control}
+          name={`projects.${index}.date`}
+          fontSize={14}
+          fontStyle="italic"
+        />
+      </div>
+      <div className="grid grid-cols-[140px_1fr] gap-2 text-sm sm:grid-cols-[220px_1fr]">
+        <EditableText value="Technology" fontWeight={700} />
+        <EditableTextController
+          control={control}
+          name={`projects.${index}.technology`}
+          fontStyle="italic"
+          fullWidth
+          multiline
+        />
+        <EditableText value="Description" fontWeight={700} />
+        <div>
+          {descriptions.fields.map((field, descIndex) => (
+            <div key={field.id} className="flex items-start gap-1">
+              <span>•</span>
+              <EditableTextController
+                control={control}
+                name={`projects.${index}.description.${descIndex}.name`}
+                fullWidth
+                multiline
+                fontSize={15}
+              />
+            </div>
+          ))}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => descriptions.append({ name: "" })}
+          >
+            + Description
+          </Button>
+        </div>
+      </div>
+    </EditableHoverCard>
+  );
+}

@@ -2,9 +2,100 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import type { BaseNavbarProps } from "./types/navbar.types";
 import { ThemeToggle } from "../ui/ThemeToggle";
-export function BaseNavbar({ menuItems = [], actions, desktopActions, mobileActions, logo }: BaseNavbarProps) {
+export function BaseNavbar({
+  menuItems = [],
+  actions,
+  desktopActions,
+  mobileActions,
+  logo,
+}: BaseNavbarProps) {
   const [open, setOpen] = useState(false);
   const desktop = desktopActions ?? actions?.desktop;
   const mobile = mobileActions ?? actions?.mobile;
-  return <><header className="sticky top-0 z-30 border-b border-border bg-app-header/90 backdrop-blur-md"><div className="mx-auto flex min-h-[72px] max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">{logo ?? <span className="text-xl font-extrabold tracking-tight text-foreground">ResumeAI</span>}<nav className="ml-auto hidden items-center gap-7 md:flex" aria-label="Main navigation">{menuItems.map((item) => <button key={item.label} type="button" onClick={item.onClick} className="text-sm font-medium text-muted-foreground transition hover:text-primary">{item.label}</button>)}<ThemeToggle />{desktop}</nav><button type="button" aria-label="Open menu" onClick={() => setOpen(true)} className="ml-auto rounded-md p-2 text-foreground md:hidden"><Menu size={22} /></button></div></header>{open && <div className="fixed inset-0 z-40 md:hidden" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}><div className="absolute inset-0 bg-foreground/50" /><aside className="absolute right-0 top-0 flex h-full w-80 max-w-[88vw] flex-col border-l border-border bg-card p-6 shadow-xl" aria-label="Mobile navigation"><div className="flex items-center justify-between"><span className="text-xl font-extrabold tracking-tight text-foreground">ResumeAI</span><button type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="rounded-md p-2 hover:bg-surface-muted"><X size={20} /></button></div><nav className="mt-8 flex flex-col gap-2">{menuItems.map((item) => <button key={item.label} type="button" onClick={() => { item.onClick?.(); setOpen(false); }} className="rounded-md px-3 py-3 text-left font-medium text-muted-foreground hover:bg-surface-muted hover:text-foreground">{item.label}</button>)}</nav><div className="mt-auto flex flex-col gap-3"><ThemeToggle />{mobile}</div></aside></div>}</>;
+  return (
+    <>
+      <header className="sticky top-0 z-30 border-b border-border bg-app-header/90 backdrop-blur-md">
+        <div className="mx-auto flex min-h-[72px] max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
+          {logo ?? (
+            <span className="text-xl font-extrabold tracking-tight text-foreground">
+              ResumeAI
+            </span>
+          )}
+          <nav
+            className="ml-auto hidden items-center gap-7 md:flex"
+            aria-label="Main navigation"
+          >
+            {menuItems.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                onClick={item.onClick}
+                className="text-sm font-medium text-muted-foreground transition hover:text-primary"
+              >
+                {item.label}
+              </button>
+            ))}
+            <ThemeToggle />
+            {desktop}
+          </nav>
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+            className="ml-auto rounded-md p-2 text-foreground md:hidden"
+          >
+            <Menu size={22} />
+          </button>
+        </div>
+      </header>
+      {open && (
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setOpen(false);
+          }}
+        >
+          <div className="absolute inset-0 bg-foreground/50" />
+          <aside
+            className="absolute right-0 top-0 flex h-full w-80 max-w-[88vw] flex-col border-l border-border bg-card p-6 shadow-xl"
+            aria-label="Mobile navigation"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xl font-extrabold tracking-tight text-foreground">
+                ResumeAI
+              </span>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+                className="rounded-md p-2 hover:bg-surface-muted"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <nav className="mt-8 flex flex-col gap-2">
+              {menuItems.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => {
+                    item.onClick?.();
+                    setOpen(false);
+                  }}
+                  className="rounded-md px-3 py-3 text-left font-medium text-muted-foreground hover:bg-surface-muted hover:text-foreground"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+            <div className="mt-auto flex flex-col gap-3">
+              <ThemeToggle />
+              {mobile}
+            </div>
+          </aside>
+        </div>
+      )}
+    </>
+  );
 }

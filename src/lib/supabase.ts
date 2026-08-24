@@ -9,5 +9,5 @@ export const supabase = createClient(
       persistSession: true,
       autoRefreshToken: true,
     },
-  }
+  },
 );

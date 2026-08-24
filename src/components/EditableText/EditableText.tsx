@@ -1,3 +1,84 @@
 import type { CSSProperties } from "react";
-interface EditableTextProps { value: string; onChange?: (value: string) => void; fontFamily?: string; fontSize?: string | number; fontWeight?: number | string; fontStyle?: "normal" | "italic"; color?: string; letterSpacing?: string; lineHeight?: number | string; placeholder?: string; className?: string; multiline?: boolean; fullWidth?: boolean; minWidth?: string | number; maxWidth?: string | number; minRows?: number; maxRows?: number; disabled?: boolean; }
-export default function EditableText({ value, onChange, fontFamily, fontSize = 16, fontWeight = 400, fontStyle = "normal", color, letterSpacing, lineHeight, placeholder = "Type here...", className = "", multiline = false, fullWidth = false, minWidth = "100px", maxWidth = "400px", minRows = 1, disabled = false }: EditableTextProps) { const style: CSSProperties = { fontFamily, fontSize: typeof fontSize === "number" ? `${fontSize}px` : fontSize, fontWeight, fontStyle, color, letterSpacing, lineHeight, minWidth: fullWidth ? undefined : minWidth, maxWidth: fullWidth ? undefined : maxWidth, width: fullWidth ? "100%" : undefined }; if (!onChange || disabled) return <span className={`inline-block whitespace-pre-wrap break-words ${className}`} style={style}>{value || placeholder}</span>; const common = `rounded px-1 py-0.5 outline-none transition hover:bg-slate-100 focus:bg-slate-100 ${className}`; return multiline ? <textarea value={value} placeholder={placeholder} aria-label={placeholder} rows={minRows} onChange={(event) => onChange(event.target.value)} className={`block resize-none ${common}`} style={style} /> : <input type="text" value={value} placeholder={placeholder} aria-label={placeholder} onChange={(event) => onChange(event.target.value)} className={`inline-block ${common}`} style={style} />; }
+interface EditableTextProps {
+  value: string;
+  onChange?: (value: string) => void;
+  fontFamily?: string;
+  fontSize?: string | number;
+  fontWeight?: number | string;
+  fontStyle?: "normal" | "italic";
+  color?: string;
+  letterSpacing?: string;
+  lineHeight?: number | string;
+  placeholder?: string;
+  className?: string;
+  multiline?: boolean;
+  fullWidth?: boolean;
+  minWidth?: string | number;
+  maxWidth?: string | number;
+  minRows?: number;
+  maxRows?: number;
+  disabled?: boolean;
+}
+export default function EditableText({
+  value,
+  onChange,
+  fontFamily,
+  fontSize = 16,
+  fontWeight = 400,
+  fontStyle = "normal",
+  color,
+  letterSpacing,
+  lineHeight,
+  placeholder = "Type here...",
+  className = "",
+  multiline = false,
+  fullWidth = false,
+  minWidth = "100px",
+  maxWidth = "400px",
+  minRows = 1,
+  disabled = false,
+}: EditableTextProps) {
+  const style: CSSProperties = {
+    fontFamily,
+    fontSize: typeof fontSize === "number" ? `${fontSize}px` : fontSize,
+    fontWeight,
+    fontStyle,
+    color,
+    letterSpacing,
+    lineHeight,
+    minWidth: fullWidth ? undefined : minWidth,
+    maxWidth: fullWidth ? undefined : maxWidth,
+    width: fullWidth ? "100%" : undefined,
+  };
+  if (!onChange || disabled)
+    return (
+      <span
+        className={`inline-block whitespace-pre-wrap break-words ${className}`}
+        style={style}
+      >
+        {value || placeholder}
+      </span>
+    );
+  const common = `rounded px-1 py-0.5 outline-none transition hover:bg-slate-100 focus:bg-slate-100 ${className}`;
+  return multiline ? (
+    <textarea
+      value={value}
+      placeholder={placeholder}
+      aria-label={placeholder}
+      rows={minRows}
+      onChange={(event) => onChange(event.target.value)}
+      className={`block resize-none ${common}`}
+      style={style}
+    />
+  ) : (
+    <input
+      type="text"
+      value={value}
+      placeholder={placeholder}
+      aria-label={placeholder}
+      onChange={(event) => onChange(event.target.value)}
+      className={`inline-block ${common}`}
+      style={style}
+    />
+  );
+}

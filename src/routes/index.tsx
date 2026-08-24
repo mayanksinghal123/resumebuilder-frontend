@@ -1,8 +1,4 @@
-import {
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Auth from "../pages/Auth/Auth";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -11,16 +7,10 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Default */}
-      <Route
-        path="/"
-        element={<Navigate to="/auth" replace />}
-      />
+      <Route path="/" element={<Navigate to="/auth" replace />} />
 
       {/* Public Route */}
-      <Route
-        path="/auth"
-        element={<Auth />}
-      />
+      <Route path="/auth" element={<Auth />} />
 
       {/* Protected Route */}
       <Route
@@ -33,10 +23,7 @@ const AppRoutes = () => {
       />
 
       {/* Invalid route fallback */}
-      <Route
-        path="*"
-        element={<Navigate to="/auth" replace />}
-      />
+      <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>
   );
 };
