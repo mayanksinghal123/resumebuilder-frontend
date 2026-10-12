@@ -1,84 +1,162 @@
-import type { CSSProperties } from "react";
-interface EditableTextProps {
-  value: string;
-  onChange?: (value: string) => void;
-  fontFamily?: string;
-  fontSize?: string | number;
-  fontWeight?: number | string;
-  fontStyle?: "normal" | "italic";
-  color?: string;
-  letterSpacing?: string;
-  lineHeight?: number | string;
-  placeholder?: string;
-  className?: string;
-  multiline?: boolean;
-  fullWidth?: boolean;
-  minWidth?: string | number;
-  maxWidth?: string | number;
-  minRows?: number;
-  maxRows?: number;
-  disabled?: boolean;
-}
-export default function EditableText({
+import { useLayoutEffect, useRef } from "react";
+import type { ChangeEvent } from "react";
+import type { EditableTextProps } from "./types/editable-text.types";
+
+const EditableText = ({
   value,
   onChange,
-  fontFamily,
-  fontSize = 16,
-  fontWeight = 400,
-  fontStyle = "normal",
-  color,
-  letterSpacing,
-  lineHeight,
   placeholder = "Type here...",
-  className = "",
   multiline = false,
   fullWidth = false,
-  minWidth = "100px",
-  maxWidth = "400px",
   minRows = 1,
+  maxRows,
   disabled = false,
-}: EditableTextProps) {
-  const style: CSSProperties = {
-    fontFamily,
-    fontSize: typeof fontSize === "number" ? `${fontSize}px` : fontSize,
-    fontWeight,
-    fontStyle,
-    color,
-    letterSpacing,
-    lineHeight,
-    minWidth: fullWidth ? undefined : minWidth,
-    maxWidth: fullWidth ? undefined : maxWidth,
-    width: fullWidth ? "100%" : undefined,
+  className = "",
+}: EditableTextProps) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const isEditable = Boolean(onChange) && !disabled;
+
+  useLayoutEffect(() => {
+    if (!multiline || !textareaRef.current) {
+      return;
+    }
+
+    const textarea = textareaRef.current;
+
+    textarea.style.height = "auto";
+
+    const styles = window.getComputedStyle(textarea);
+
+    const lineHeight = parseFloat(styles.lineHeight) || 16;
+    const paddingTop = parseFloat(styles.paddingTop) || 0;
+    const paddingBottom = parseFloat(styles.paddingBottom) || 0;
+
+    const padding = paddingTop + paddingBottom;
+
+    const minHeight = lineHeight * Math.max(minRows, 1) + padding;
+
+    const maxHeight = maxRows ? lineHeight * maxRows + padding : Infinity;
+
+    const height = Math.min(
+      Math.max(textarea.scrollHeight, minHeight),
+      maxHeight,
+    );
+
+    textarea.style.height = `${height}px`;
+    textarea.style.overflowY =
+      textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+  }, [value, multiline, minRows, maxRows]);
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    onChange?.(event.target.value);
   };
-  if (!onChange || disabled)
+
+  if (!isEditable) {
     return (
       <span
-        className={`inline-block whitespace-pre-wrap break-words ${className}`}
-        style={style}
+        className={`
+          ${
+            multiline
+              ? "block whitespace-pre-wrap break-words"
+              : "inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis"
+          }
+          ${className}
+        `}
       >
         {value || placeholder}
       </span>
     );
-  const common = `rounded px-1 py-0.5 outline-none transition hover:bg-slate-100 focus:bg-slate-100 ${className}`;
-  return multiline ? (
-    <textarea
-      value={value}
-      placeholder={placeholder}
-      aria-label={placeholder}
-      rows={minRows}
-      onChange={(event) => onChange(event.target.value)}
-      className={`block resize-none ${common}`}
-      style={style}
-    />
-  ) : (
+  }
+
+  const baseClassName = `
+  border
+  border-transparent
+  bg-transparent
+  rounded-sm
+  px-[6px]
+  py-[2px]
+  font-[inherit]
+  leading-[inherit]
+  tracking-[inherit]
+  text-left
+
+  cursor-pointer
+  focus:cursor-text
+
+  outline-none
+  appearance-none
+  ring-0
+  shadow-none
+
+  transition-colors
+  duration-150
+  ease-out
+
+  hover:bg-[var(--editable-hover-bg,#f8fafc)]
+  hover:border-dashed
+  hover:border-[var(--editable-hover-border,#cbd5e1)]
+  hover:text-[var(--editable-hover-text,currentColor)]
+
+  focus:bg-[var(--editable-hover-bg,#f8fafc)]
+  focus:border-solid
+  focus:border-[var(--editable-hover-border,var(--ring))]
+  focus:outline-none
+  focus:ring-0
+  focus:shadow-none
+
+  placeholder:opacity-70
+
+  disabled:cursor-not-allowed
+  disabled:opacity-60
+`;
+
+  if (multiline) {
+    return (
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        rows={minRows}
+        disabled={disabled}
+        spellCheck={false}
+        aria-label={placeholder}
+        className={`
+          block
+          ${fullWidth ? "w-full" : "w-auto max-w-full"}
+          resize-none
+          whitespace-pre-wrap
+          break-words
+          overflow-x-hidden
+          ${baseClassName}
+          ${className}
+        `}
+      />
+    );
+  }
+
+  return (
     <input
       type="text"
       value={value}
+      onChange={handleChange}
       placeholder={placeholder}
+      disabled={disabled}
+      spellCheck={false}
       aria-label={placeholder}
-      onChange={(event) => onChange(event.target.value)}
-      className={`inline-block ${common}`}
-      style={style}
+      className={`
+        ${fullWidth ? "block w-full" : "inline-block max-w-full"}
+        whitespace-nowrap
+        overflow-hidden
+        text-ellipsis
+        ${baseClassName}
+        ${className}
+      `}
     />
   );
-}
+};
+
+export default EditableText;

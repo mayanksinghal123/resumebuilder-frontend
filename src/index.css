@@ -103,21 +103,21 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-button,
+/* button,
 input,
 textarea {
   font: inherit;
-}
+} */
 button {
   cursor: pointer;
 }
 button:disabled {
   cursor: not-allowed;
 }
-:focus-visible {
+/* :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
-}
+} */
 
 @media print {
   body {

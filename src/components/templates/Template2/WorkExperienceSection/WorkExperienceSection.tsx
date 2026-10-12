@@ -1,17 +1,22 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
+
 import type { GenerateResumeInput } from "@resume-app/shared";
+
+import AddRowButton from "../../../AddRowButton/AddRowButton";
+import EditableHoverCard from "../../../EditableHoverCard/EditableHoverCard";
 import EditableText from "../../../EditableText/EditableText";
 import EditableTextController from "../../../EditableTextController/EditableTextController";
-import EditableHoverCard from "../../../EditableHoverCard/EditableHoverCard";
 import EmptySection from "../../../EmptySection/EmptySection";
-import AddRowButton from "../../../AddRowButton/AddRowButton";
+
 export default function WorkExperienceSection() {
   const { control } = useFormContext<GenerateResumeInput>();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experiences",
   });
-  const add = () =>
+
+  const add = () => {
     append({
       company: "Tech Company",
       role: "Software Engineer",
@@ -20,48 +25,64 @@ export default function WorkExperienceSection() {
       description:
         "Working on developing and maintaining web applications using React and Node.js.",
     });
-  if (!fields.length)
+  };
+
+  if (!fields.length) {
     return <EmptySection label="Add Work Experience" onClick={add} />;
+  }
+
   return (
     <section className="space-y-1">
-      <EditableText value="WORK EXPERIENCE" fontSize={11} fontWeight={700} />
+      <EditableText
+        value="WORK EXPERIENCE"
+        className="text-[11px] font-bold"
+      />
+
       <div className="space-y-1">
         {fields.map((field, index) => (
-          <EditableHoverCard key={field.id} onDelete={() => remove(index)}>
+          <EditableHoverCard
+            key={field.id}
+            onDelete={() => remove(index)}
+          >
             <div className="flex flex-col">
               <EditableTextController
                 control={control}
-                name={`experiences.${index}.date`}
-                fontSize={11}
-                fontStyle="italic"
+                name={`experiences.${index}.dates`}
+                className="text-[11px] italic"
               />
-              <div className="flex flex-wrap items-center gap-1">
+
+              <div className="flex w-full items-center gap-1">
                 <EditableTextController
                   control={control}
                   name={`experiences.${index}.role`}
-                  fontSize={10}
-                  fontWeight={700}
+                  className="min-w-0 flex-1 text-[10px] font-bold"
                 />
-                <span>|</span>
+
+                <span className="shrink-0 text-[10px]">|</span>
+
                 <EditableTextController
                   control={control}
                   name={`experiences.${index}.company`}
-                  fontSize={10}
-                  fontWeight={700}
+                  className="min-w-0 flex-1 text-[10px] font-bold"
                 />
-                <span>|</span>
+
+                <span className="shrink-0 text-[10px]">|</span>
+
                 <EditableTextController
                   control={control}
                   name={`experiences.${index}.location`}
-                  fontSize={10}
-                  fontStyle="italic"
+                  className="min-w-0 flex-1 text-[10px] italic"
                 />
               </div>
             </div>
           </EditableHoverCard>
         ))}
       </div>
-      <AddRowButton label="Add More Experience" onClick={add} />
+
+      <AddRowButton
+        label="Add More Experience"
+        onClick={add}
+      />
     </section>
   );
 }

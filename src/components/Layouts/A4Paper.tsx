@@ -6,7 +6,7 @@ interface A4PaperProps {
 export default function A4Paper({ children, className = "" }: A4PaperProps) {
   return (
     <div
-      className={`relative mx-auto min-h-[297mm] w-[210mm] shrink-0 overflow-hidden bg-resume-paper p-5 text-slate-900 shadow-lg print:m-0 print:shadow-none ${className}`}
+      className={`relative mx-auto min-h-[297mm] w-[210mm] shrink-0 overflow-hidden bg-resume-paper text-slate-900 shadow-lg print:m-0 print:shadow-none ${className}`}
     >
       {children}
     </div>

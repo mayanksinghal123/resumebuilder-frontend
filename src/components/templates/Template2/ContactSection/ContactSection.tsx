@@ -1,30 +1,27 @@
 import { useFormContext } from "react-hook-form";
+
 import type { GenerateResumeInput } from "@resume-app/shared";
+
 import EditableText from "../../../EditableText/EditableText";
 import EditableTextController from "../../../EditableTextController/EditableTextController";
+
 export default function ContactSection() {
   const { control } = useFormContext<GenerateResumeInput>();
+
   return (
     <section className="space-y-1 px-5 pt-5">
-      <EditableText
-        value="CONTACT"
-        fontSize={11}
-        fontWeight={700}
-        color="#fff"
-      />
+      <EditableText value="CONTACT" className="text-[11px] font-bold" />
+
       <EditableTextController
         control={control}
         name="phone"
-        fontSize={11}
-        fontStyle="italic"
-        color="#fff"
+        className="text-[11px] italic"
       />
+
       <EditableTextController
         control={control}
         name="email"
-        fontSize={11}
-        fontStyle="italic"
-        color="#fff"
+        className="text-[11px] italic"
       />
     </section>
   );
